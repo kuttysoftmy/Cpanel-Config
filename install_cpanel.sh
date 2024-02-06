@@ -7,14 +7,12 @@ PASSV_MIN=$(echo $PASSV_PORT | cut -d':' -f1)
 PASSV_MAX=$(echo $PASSV_PORT | cut -d':' -f2)
 ISVPS=$(((dmidecode -t system 2>/dev/null | grep "Manufacturer" | grep -i 'VMware\|KVM\|Bochs\|Virtual\|HVM' > /dev/null) || [ -f /proc/vz/veinfo ]) && echo "SI" || echo "NO")
 
-echo "########  #### ##    ##    ###    ########     #### ########"
-echo "##     ##  ##   ##  ##    ## ##   ##     ##     ##     ##"    
-echo "##     ##  ##    ####    ##   ##  ##     ##     ##     ##"   
-echo "##     ##  ##     ##    ##     ## ########      ##     ##"   
-echo "##     ##  ##     ##    ######### ##   ##       ##     ##"   
-echo "##     ##  ##     ##    ##     ## ##    ##      ##     ##"   
-echo "########  ####    ##    ##     ## ##     ##    ####    ##"   
-
+echo "  _  __     _   _         ____         __ _   "
+echo " | |/ /   _| |_| |_ _   _/ ___|  ___  / _| |_ "
+echo " | ' / | | | __| __| | | \___ \ / _ \| |_| __|"
+echo " | . \ |_| | |_| |_| |_| |___) | (_) |  _| |_ "
+echo " |_|\_\__,_|\__|\__|\__, |____/ \___/|_|  \__|"
+echo "                    |___/                      "
 echo ""
 echo "             ####################### cPanel Configurator #######################              "
 echo ""
@@ -101,18 +99,6 @@ else
 fi
 echo "####### END INSTALLING CPANEL #######"
 
-echo "####### VERIFYING LICENSE #######"
-i=0
-while ! (curl -m 10 -L "https://verify.cpanel.net?ip=$(curl -m 10 -L checkip.amazonaws.com 2>/dev/null)" 2>/dev/null | grep -v "active on" | grep "active" > /dev/null); do
-	if [ $i -gt 30 ]; then
-	echo "It was retried more than $i times, it cannot be followed. License the IP and then run this script again."
-	exit 1
-fi
-	echo "CPanel license not detected, retry in 15 minutes..."
-        sleep 300
-        ((i=i+1))
-done
-echo "####### END VERIFYING LICENSE #######"
 
 whmapi1 sethostname hostname=$(cat /root/hostname) # Fix hostname change by cprapid.com cpanel v90 https://docs.cpanel.net/knowledge-base/dns/automatically-issued-hostnames/
 hostnamectl set-hostname $(cat /root/hostname)
